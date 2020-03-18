@@ -22,7 +22,9 @@ func (r *RpcClient) ListenForCommands(handlers map[string]CommandHandler) error 
 		return err
 	}
 
-	defer ignoreError(c.CloseSend())
+	defer func() {
+		_ = c.CloseSend()
+	}()
 
 	for {
 		message, err := c.Recv()
@@ -46,5 +48,3 @@ func (r *RpcClient) ListenForCommands(handlers map[string]CommandHandler) error 
 func (c Command) Reply(message string) error {
 	return c.client.Send(c.Channel, message)
 }
-
-func ignoreError (_ error) {}

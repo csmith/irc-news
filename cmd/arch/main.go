@@ -4,18 +4,24 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/csmith/ircplugins"
+	"github.com/kouhin/envflag"
+	"io"
 	"log"
 	"net/http"
 	"net/url"
 )
 
 func main() {
+	if err := envflag.Parse(); err != nil {
+		log.Fatalf("Unable to parse config: %v\n", err)
+	}
+
 	client, err := ircplugins.NewClient()
 	if err != nil {
 		log.Fatalf("Failed to connec to RPC: %v\n", err)
 	}
 
-	defer ignoreError(client.Close())
+	defer mustClose(client)
 
 	err = client.ListenForCommands(map[string]ircplugins.CommandHandler{
 		"!arch": searchPackages,
@@ -80,7 +86,7 @@ func packages(url, nameKey, descriptionKey, versionKey string) (packages []Packa
 		return
 	}
 
-	defer ignoreError(res.Body.Close())
+	defer mustClose(res.Body)
 
 	result := &Result{}
 	if err = json.NewDecoder(res.Body).Decode(result); err != nil {
@@ -101,4 +107,6 @@ func packages(url, nameKey, descriptionKey, versionKey string) (packages []Packa
 	return
 }
 
-func ignoreError (_ error) {}
+func mustClose (c io.Closer) {
+	_ = c.Close()
+}

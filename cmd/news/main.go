@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/csmith/ircplugins"
+	"github.com/kouhin/envflag"
 	"github.com/mmcdole/gofeed"
 	"log"
 	"net/http"
@@ -27,6 +28,10 @@ var (
 )
 
 func main() {
+	if err := envflag.Parse(); err != nil {
+		log.Fatalf("Unable to parse config: %v\n", err)
+	}
+
 	client, err := ircplugins.NewClient()
 	if err != nil {
 		log.Fatalf("Failed to connec to RPC: %v\n", err)
