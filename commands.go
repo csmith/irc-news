@@ -1,7 +1,8 @@
 package ircplugins
 
 import (
-	"github.com/greboid/irc/rpc"
+	"context"
+	"github.com/greboid/irc/v3/rpc"
 	"strings"
 )
 
@@ -17,21 +18,10 @@ type CommandHandler func(command Command)
 
 // ListenForCommands listens to all messages and calls handlers if the message starts with the corresponding string.
 func (r *RpcClient) ListenForCommands(handlers map[string]CommandHandler) error {
-	c, err := r.client.GetMessages(r.ctx, &rpc.Channel{Name: "*"})
-	if err != nil {
-		return err
-	}
+	ctx, cancel := context.WithCancel(r.ctx)
+	defer cancel()
 
-	defer func() {
-		_ = c.CloseSend()
-	}()
-
-	for {
-		message, err := c.Recv()
-		if err != nil {
-			return err
-		}
-
+	return r.helper.RegisterChannelMessageHandlerWithContext(ctx, "*", func(message *rpc.ChannelMessage) {
 		for command, handler := range handlers {
 			if strings.HasPrefix(strings.ToLower(message.Message), command) {
 				go handler(Command{
@@ -41,7 +31,7 @@ func (r *RpcClient) ListenForCommands(handlers map[string]CommandHandler) error 
 				})
 			}
 		}
-	}
+	})
 }
 
 // Reply sends a message back to the channel the command was executed in.

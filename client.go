@@ -2,11 +2,9 @@ package ircplugins
 
 import (
 	"context"
-	"crypto/tls"
 	"flag"
-	"github.com/greboid/irc/rpc"
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/credentials"
+	"github.com/greboid/irc/v3/plugins"
+	"github.com/greboid/irc/v3/rpc"
 )
 
 var (
@@ -16,15 +14,14 @@ var (
 
 // RpcClient is a simple wrapper around the bot's RPC interface.
 type RpcClient struct {
-	conn   *grpc.ClientConn
-	client rpc.IRCPluginClient
+	helper *plugins.PluginHelper
 	ctx    context.Context
 	cancel context.CancelFunc
 }
 
 // NewClient creates a new RpcClient and connects to the user-supplied host.
 func NewClient() (*RpcClient, error) {
-	conn, err := grpc.Dial(*rpcHost, grpc.WithTransportCredentials(credentials.NewTLS(&tls.Config{InsecureSkipVerify: true})))
+	helper, err := plugins.NewHelper(*rpcHost, *rpcToken)
 	if err != nil {
 		return nil, err
 	}
@@ -32,8 +29,7 @@ func NewClient() (*RpcClient, error) {
 	ctx, cancel := context.WithCancel(rpc.CtxWithToken(context.Background(), "bearer", *rpcToken))
 
 	return &RpcClient{
-		conn:   conn,
-		client: rpc.NewIRCPluginClient(conn),
+		helper: helper,
 		ctx:    ctx,
 		cancel: cancel,
 	}, nil
@@ -41,12 +37,11 @@ func NewClient() (*RpcClient, error) {
 
 // Send sends a message to a channel.
 func (r *RpcClient) Send(channel, message string) error {
-	_, err := r.client.SendChannelMessage(r.ctx, &rpc.ChannelMessage{Channel: channel, Message: message})
-	return err
+	return r.helper.SendChannelMessageWithContext(r.ctx, channel, message)
 }
 
 // Close disconnects from the RPC service.
 func (r *RpcClient) Close() error {
 	r.cancel()
-	return r.conn.Close()
+	return nil
 }
