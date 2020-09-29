@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"github.com/greboid/irc/v3/plugins"
-	"github.com/greboid/irc/v3/rpc"
 )
 
 var (
@@ -26,7 +25,7 @@ func NewClient() (*RpcClient, error) {
 		return nil, err
 	}
 
-	ctx, cancel := context.WithCancel(rpc.CtxWithToken(context.Background(), "bearer", *rpcToken))
+	ctx, cancel := context.WithCancel(context.Background())
 
 	return &RpcClient{
 		helper: helper,
