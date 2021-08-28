@@ -19,9 +19,7 @@ var (
 		"HN":         "https://news.ycombinator.com/rss",
 		"Lobsters":   "https://lobste.rs/rss",
 		"Tilde.news": "https://tilde.news/rss",
-		"laarc":      "https://www.laarc.io/rss",
-		"TrueReddit": "https://www.reddit.com/r/TrueReddit/.rss",
-		"Pinboard":   "https://feeds.pinboard.in/rss/popular/",
+		"BBC":        "https://feeds.bbci.co.uk/news/rss.xml",
 	}
 
 	seen      = map[string]bool{}
