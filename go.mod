@@ -5,7 +5,7 @@ go 1.17
 require (
 	github.com/greboid/irc-bot/v5 v5.0.1
 	github.com/kouhin/envflag v0.0.0-20150818174321-0e9a86061649
-	github.com/mmcdole/gofeed v1.1.0
+	github.com/mmcdole/gofeed v1.1.3
 	golang.org/x/net v0.0.0-20201002202402-0a1ea396d57c // indirect
 	golang.org/x/sys v0.0.0-20201005172224-997123666555 // indirect
 	google.golang.org/genproto v0.0.0-20201006033701-bcad7cf615f2 // indirect
