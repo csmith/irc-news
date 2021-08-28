@@ -2,8 +2,9 @@ package ircplugins
 
 import (
 	"context"
-	"github.com/greboid/irc/v3/rpc"
 	"strings"
+
+	"github.com/greboid/irc-bot/v5/rpc"
 )
 
 // Command represents a command that has been invoked on IRC.

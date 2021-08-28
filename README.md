@@ -1,6 +1,6 @@
 # IRC Plugins
 
-This is an assortment of "plugins" for [greboid/irc](https://github.com/greboid/irc/).
+This is an assortment of "plugins" for [greboid/irc-bot](https://github.com/greboid/irc-bot/).
 
 ## Content
 

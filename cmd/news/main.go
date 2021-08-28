@@ -3,12 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/csmith/ircplugins"
-	"github.com/kouhin/envflag"
-	"github.com/mmcdole/gofeed"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/csmith/ircplugins"
+	"github.com/kouhin/envflag"
+	"github.com/mmcdole/gofeed"
 )
 
 var (

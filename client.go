@@ -3,7 +3,8 @@ package ircplugins
 import (
 	"context"
 	"flag"
-	"github.com/greboid/irc/v3/plugins"
+
+	"github.com/greboid/irc-bot/v5/plugins"
 )
 
 var (

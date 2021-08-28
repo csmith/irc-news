@@ -3,12 +3,13 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/csmith/ircplugins"
-	"github.com/kouhin/envflag"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
+
+	"github.com/csmith/ircplugins"
+	"github.com/kouhin/envflag"
 )
 
 func main() {
