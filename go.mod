@@ -3,7 +3,7 @@ module github.com/csmith/ircplugins
 go 1.17
 
 require (
-	github.com/greboid/irc-bot/v5 v5.0.1
+	github.com/greboid/irc-bot/v5 v5.0.2
 	github.com/kouhin/envflag v0.0.0-20150818174321-0e9a86061649
 	github.com/mmcdole/gofeed v1.1.3
 	golang.org/x/net v0.0.0-20201002202402-0a1ea396d57c // indirect
