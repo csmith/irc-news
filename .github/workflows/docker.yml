@@ -32,7 +32,7 @@ jobs:
             0
 
       - name: Push news to GHCR
-        uses: redhat-actions/push-to-registry@v2.3.1
+        uses: redhat-actions/push-to-registry@v2.3.2
         with:
           image: ${{ steps.build-news-image.outputs.image }}
           registry: ghcr.io
@@ -53,7 +53,7 @@ jobs:
             0
 
       - name: Push arch to GHCR
-        uses: redhat-actions/push-to-registry@v2.3.1
+        uses: redhat-actions/push-to-registry@v2.3.2
         with:
           image: ${{ steps.build-arch-image.outputs.image }}
           registry: ghcr.io
