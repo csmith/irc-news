@@ -97,7 +97,7 @@ func filter(link string) string {
 }
 
 func announce(ctx context.Context, helper *plugins.PluginHelper, source, title, link string) {
-	if err := helper.SendRelayMessageWithContext(ctx, *channel, source, fmt.Sprintf("%s - %s", title, link)); err != nil {
+	if err := helper.SendRelayMessageWithContext(ctx, *channel, fmt.Sprintf("news/%s", source), fmt.Sprintf("%s - %s", title, link)); err != nil {
 		log.Panicf("Unable to send message: %v\n", err)
 	}
 }
