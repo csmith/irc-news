@@ -1,15 +1,22 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
-	"github.com/csmith/ircplugins"
+	"github.com/greboid/irc-bot/v5/plugins"
 	"github.com/kouhin/envflag"
 	"github.com/mmcdole/gofeed"
+)
+
+var (
+	rpcHost  = flag.String("host", "localhost:8001", "Host and port to connect to RPC server on")
+	rpcToken = flag.String("token", "isedjfiuwserfuesd", "Token to use to authenticate RPC requests")
 )
 
 var (
@@ -31,26 +38,26 @@ func main() {
 		log.Fatalf("Unable to parse config: %v\n", err)
 	}
 
-	client, err := ircplugins.NewClient()
+	ctx, cancel := context.WithCancel(context.Background())
+
+	client, err := plugins.NewHelper(*rpcHost, *rpcToken)
 	if err != nil {
 		log.Fatalf("Failed to connec to RPC: %v\n", err)
 	}
 
-	defer func() {
-		_ = client.Close()
-	}()
+	defer cancel()
 
 	timer := time.NewTicker(time.Minute)
 
 	for {
 		select {
 		case _ = <-timer.C:
-			checkForNewItems(client, selectSite())
+			checkForNewItems(ctx, client, selectSite())
 		}
 	}
 }
 
-func checkForNewItems(client *ircplugins.RpcClient, site string) {
+func checkForNewItems(ctx context.Context, helper *plugins.PluginHelper, site string) {
 	log.Printf("Updating site %s...\n", site)
 
 	_, hasPrevious := lastCheck[site]
@@ -71,15 +78,28 @@ func checkForNewItems(client *ircplugins.RpcClient, site string) {
 		if !hasPrevious {
 			seen[item.Link] = true
 		} else if !seen[item.Link] {
-			log.Printf("New item: %s (%s)\n", item.Title, item.Link)
-			if err := client.Send(*channel, fmt.Sprintf("[%s] %s - %s", site, item.Title, item.Link)); err != nil {
-				log.Panicf("Unable to send message: %v\n", err)
+			filtered := filter(item.Link)
+			if filtered != "" {
+				announce(ctx, helper, site, item.Title, filtered)
 			}
 			seen[item.Link] = true
 		}
 	}
 
 	lastCheck[site] = time.Now()
+}
+
+func filter(link string) string {
+	if strings.HasPrefix(link, "https://www.bbc.co.uk/sport") {
+		return ""
+	}
+	return strings.TrimSuffix(link, "?at_medium=RSS&at_campaign=KARANGA")
+}
+
+func announce(ctx context.Context, helper *plugins.PluginHelper, source, title, link string) {
+	if err := helper.SendRawMessageWithContext(ctx, fmt.Sprintf("RELAYMSG %s news/%s :%s - %s", *channel, source, title, link)); err != nil {
+		log.Panicf("Unable to send message: %v\n", err)
+	}
 }
 
 func items(parser *gofeed.Parser, site string) ([]*gofeed.Item, error) {

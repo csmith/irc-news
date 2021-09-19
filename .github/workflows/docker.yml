@@ -18,14 +18,14 @@ jobs:
         uses: greboid/docker-tags-action@v5.0.2
         with:
           separator: ' '
-          fullname: 'false' 
+          fullname: 'false'
 
       - name: Build news image
         id: build-news-image
         uses: redhat-actions/buildah-build@v2.7
         with:
-          dockerfiles: news.Dockerfile
-          image: ${{ github.repository }}/news
+          dockerfiles: Dockerfile
+          image: ${{ github.repository }}
           tags: ${{ steps.tags.outputs.tags }}
           extra-args: >
             --timestamp
@@ -35,27 +35,6 @@ jobs:
         uses: redhat-actions/push-to-registry@v2.3.2
         with:
           image: ${{ steps.build-news-image.outputs.image }}
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          tags: ${{ steps.tags.outputs.tags }}
-
-
-      - name: Build arch image
-        id: build-arch-image
-        uses: redhat-actions/buildah-build@v2.7
-        with:
-          dockerfiles: arch.Dockerfile
-          image: ${{ github.repository }}/arch
-          tags: ${{ steps.tags.outputs.tags }}
-          extra-args: >
-            --timestamp
-            0
-
-      - name: Push arch to GHCR
-        uses: redhat-actions/push-to-registry@v2.3.2
-        with:
-          image: ${{ steps.build-arch-image.outputs.image }}
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}

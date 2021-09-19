@@ -1,17 +1,6 @@
-# IRC Plugins
+# irc-news
 
-This is an assortment of "plugins" for [greboid/irc-bot](https://github.com/greboid/irc-bot/).
+This is a plugin for [greboid/irc-bot](https://github.com/greboid/irc-bot/) that
+polls various RSS feeds and announces new articles to an IRC channel.
 
-## Content
-
-### News
-
-    go run github.com/csmith/ircplugins/cmd/news -host localhost:8000 -token abcdef -channel news
-
-Polls the RSS feeds for a number of news aggregation and reports new items to a channel. 
-
-### Arch
-
-    go run github.com/csmith/ircplugins/cmd/arch -host localhost:8000 -token abcdef
-
-Responds to `!arch <package>` with search results from both the main arch repos and the AUR.
+    go run github.com/csmith/irc-news/cmd -host localhost:8000 -token abcdef -channel news
