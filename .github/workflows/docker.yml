@@ -22,7 +22,7 @@ jobs:
 
       - name: Build news image
         id: build-news-image
-        uses: redhat-actions/buildah-build@v2.8
+        uses: redhat-actions/buildah-build@v2.9
         with:
           dockerfiles: Dockerfile
           image: ${{ github.repository }}
