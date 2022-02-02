@@ -3,7 +3,7 @@ module github.com/csmith/ircplugins
 go 1.17
 
 require (
-	github.com/greboid/irc-bot/v5 v5.0.4
+	github.com/greboid/irc-bot/v5 v5.0.5
 	github.com/kouhin/envflag v0.0.0-20150818174321-0e9a86061649
 	github.com/mmcdole/gofeed v1.1.3
 	golang.org/x/net v0.0.0-20210917221730-978cfadd31cf // indirect
@@ -24,9 +24,6 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
-	golang.org/x/xerrors v0.0.0-20200804184101-5ec99f83aff1 // indirect
-	google.golang.org/appengine v1.6.7 // indirect
-	google.golang.org/grpc v1.40.0 // indirect
+	google.golang.org/grpc v1.44.0 // indirect
 	google.golang.org/protobuf v1.27.1 // indirect
-	gopkg.in/yaml.v2 v2.3.0 // indirect
 )
