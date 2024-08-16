@@ -1,6 +1,8 @@
 module github.com/csmith/ircplugins
 
-go 1.17
+go 1.23
+
+toolchain go1.23.0
 
 require (
 	github.com/greboid/irc-bot/v5 v5.0.7
